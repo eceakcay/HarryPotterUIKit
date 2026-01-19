@@ -24,6 +24,14 @@ class BaseViewController: UIViewController {
         loadingIndicator?.removeFromSuperview()
         loadingIndicator = nil
     }
+    
+    func showError(title: String = "Hata", message: String = "Bir şeyler yanlış gitti") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
+        
+        present(alert, animated: true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -9,11 +9,13 @@ import Foundation
 
 final class HomeViewModel {
     
-    func fetchCharacters() -> [HomeCharacter] {
-        return [
-            HomeCharacter(id: UUID(), name: "Harry Potter", house: "Gryffindor"),
-            HomeCharacter(id: UUID(), name: "Hermione Granger", house: "Gryffindor"),
-            HomeCharacter(id: UUID(), name: "Draco Malfoy", house: "Slytherin")
-        ]
+    private let networkService: NetworkServiceProtocol
+    
+    init(networkService: NetworkServiceProtocol = NetworkService.shared) {
+        self.networkService = networkService
+    }
+    //burada apiden karakterleri çekiyoruz
+    func fetchCharacters() async throws -> [CharacterModel] {
+        return try await networkService.fetch(endpoint: .characters)
     }
 }

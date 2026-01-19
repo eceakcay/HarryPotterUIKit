@@ -60,8 +60,8 @@ class HomeCell: UICollectionViewCell {
         }
     }
     
-    func configure(with character: HomeCharacter) {
-        nameLabel.text = character.name
-        houseLabel.text = character.house
+    func configure(with character: CharacterModel) {
+        nameLabel.text = character.fullName
+        houseLabel.text = character.hogwartsHouse.rawValue
     }
 }
