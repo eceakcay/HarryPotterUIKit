@@ -10,7 +10,7 @@
         "Albus Severus Potter",
         "Lily Luna Potter"
       ],
-      "image": "https://hp-api.onrender.com/images/harry.jpg",
+      "image": "https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg",
       "birthdate": "Jul 31, 1980",
       "index": 0
     },
@@ -23,7 +23,7 @@
         "Rose Granger-Weasley",
         "Hugo Granger-Weasley"
       ],
-      "image": "https://raw.githubusercontent.com/fedeperin/potterapi/main/public/images/characters/hermione_granger.png",
+      "image": "https://images.sipse.com/1s7ggwPPbUz2FUv3K_3whjMDxzk=/856x748/smart/filters:format(webp)/2024/12/12/1734027376130.jpg",
       "birthdate": "Sep 19, 1979",
       "index": 1
     },
@@ -210,7 +210,7 @@
        "hogwartsHouse": "Gryffindor",
        "interpretedBy": "Robbie Coltrane",
        "children": [],
-       "image": "https://raw.githubusercontent.com/fedeperin/potterapi/main/public/images/characters/rubeus_hagrid.png",
+       "image": "https://static.wikia.nocookie.net/harrypotter/images/f/fe/Rubeus_Hagrid.png/revision/latest/scale-to-width-down/1200?cb=20221014184333",
        "birthdate": "Dec 6, 1928",
        "index": 17
      },
@@ -230,7 +230,7 @@
        "hogwartsHouse": "Slytherin",
        "interpretedBy": "Alan Rickman",
        "children": [],
-       "image": "https://raw.githubusercontent.com/fedeperin/potterapi/main/public/images/characters/severus_snape.png",
+       "image": "https://www.thewhitetree.org/wp-content/uploads/2016/08/Severus-Snape.jpg",
        "birthdate": "Jan 9, 1960",
        "index": 19
      },
