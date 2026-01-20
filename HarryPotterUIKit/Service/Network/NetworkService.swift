@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+//API → NetworkService → ViewModel → ViewController → UI
 protocol NetworkServiceProtocol {
     func fetch<T: Decodable>(endpoint: APIEndpoint) async throws -> T
 

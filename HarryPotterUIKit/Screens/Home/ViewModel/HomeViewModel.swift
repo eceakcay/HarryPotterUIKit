@@ -14,6 +14,7 @@ final class HomeViewModel {
     init(networkService: NetworkServiceProtocol = NetworkService.shared) {
         self.networkService = networkService
     }
+    
     //burada apiden karakterleri çekiyoruz
     func fetchCharacters() async throws -> [CharacterModel] {
         return try await networkService.fetch(endpoint: .characters)
