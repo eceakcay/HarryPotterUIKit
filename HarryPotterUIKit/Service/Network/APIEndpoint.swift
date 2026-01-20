@@ -8,28 +8,28 @@
 import Foundation
 
 enum APIEndpoint {
-    static let baseURL = "https://potterapi-fedeperin.vercel.app"
-    static let language = "en"
-    
+    static let baseURL = "http://localhost:3000"
+
     case houses
     case characters
     case books
     case spells
-    
+
     var path: String {
         switch self {
         case .houses:
-            return "/\(APIEndpoint.language)/houses"
+            return "/en_houses"
         case .books:
-            return "/\(APIEndpoint.language)/books"
+            return "/en_books"
         case .characters:
-            return "/\(APIEndpoint.language)/characters"
+            return "/en_characters"
         case .spells:
-            return "/\(APIEndpoint.language)/spells"
+            return "/en_spells"
         }
     }
-    
+
     var url: URL? {
-        return URL(string: APIEndpoint.baseURL + path)
+      return URL(string: APIEndpoint.baseURL + path)
     }
 }
+
