@@ -20,8 +20,8 @@ final class AppCoordinator {
     }
     
     func start() {
-        let homeVC = CharactersViewController()
-        navigationController.setViewControllers([homeVC], animated: false) //navigasyon kontrolcüsünün ilk ekranı
+        let mainTabBarController = MainTabBarController()
+        navigationController.setViewControllers([mainTabBarController], animated: false) //navigasyon kontrolcüsünün ilk ekranı
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
