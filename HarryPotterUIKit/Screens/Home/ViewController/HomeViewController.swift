@@ -13,62 +13,53 @@ final class HomeViewController: BaseViewController {
     // MARK: - Properties
     private var collectionView: UICollectionView!
     private let viewModel = HomeViewModel()
-    private var allCharacters : [CharacterModel] = [] // tüm veri
-    private var filteredCharacters: [CharacterModel] = [] // ekranda gösterilen veri
+    private var allCharacters : [CharacterModel] = []
+    private var filteredCharacters: [CharacterModel] = []
     private var searchTimer : Timer?
-    
-    // Tematik Renkler
-    private let darkBackground = UIColor(red: 0.05, green: 0.07, blue: 0.12, alpha: 1.0) // Gece Mavisi
-    private let goldColor = UIColor(red: 0.85, green: 0.75, blue: 0.45, alpha: 1.0)      // Altın Sarısı
-    private let creamText = UIColor(red: 0.96, green: 0.93, blue: 0.86, alpha: 1.0)      // Parşömen
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTheme() // Temayı uygula
+        setupTheme()
         configureSearchBar()
         configureCollectionView()
         loadCharacters()
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Ekran her göründüğünde Büyük Başlığı zorla açıyoruz
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-        }
-    
+    }
     
     // MARK: - Theme Setup
     private func setupTheme() {
-            view.backgroundColor = darkBackground
-            title = "Karakterler"
-            
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground() // Arka planı opak (dolu) yap
-            appearance.backgroundColor = darkBackground
-            
-            // Büyük Başlık Fontu & Rengi
-            appearance.largeTitleTextAttributes = [
-                .foregroundColor: goldColor,
-                .font: UIFont.systemFont(ofSize: 34, weight: .bold).withDesign(.serif) ?? .systemFont(ofSize: 34)
-            ]
-            
-            // Küçük Başlık Fontu & Rengi (Kaydırınca çıkan)
-            appearance.titleTextAttributes = [
-                .foregroundColor: goldColor,
-                .font: UIFont.systemFont(ofSize: 17, weight: .semibold).withDesign(.serif) ?? .systemFont(ofSize: 17)
-            ]
-            
-            // ⚠️ EN ÖNEMLİ KISIM: Tüm durumlara aynı ayarı ata
-            navigationController?.navigationBar.standardAppearance = appearance
-            navigationController?.navigationBar.compactAppearance = appearance
-            navigationController?.navigationBar.scrollEdgeAppearance = appearance
-            
-            navigationController?.navigationBar.prefersLargeTitles = true
-            navigationController?.navigationBar.tintColor = goldColor
-        }
+        view.backgroundColor = .hpBackground
+        title = "Karakterler"
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .hpBackground
+        
+        // Büyük Başlık
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.hpGold,
+            .font: UIFont.systemFont(ofSize: 34, weight: .bold).withDesign(.serif) ?? .systemFont(ofSize: 34)
+        ]
+        
+        // Küçük Başlık
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.hpGold,
+            .font: UIFont.systemFont(ofSize: 17, weight: .semibold).withDesign(.serif) ?? .systemFont(ofSize: 17)
+        ]
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .hpGold
+    }
     
     // MARK: - Async Load
     private func loadCharacters() {
@@ -85,7 +76,7 @@ final class HomeViewController: BaseViewController {
                 self.hideLoading()
             } catch {
                 self.hideLoading()
-                self.showError() // BaseVC'den gelen hata gösterimi
+                self.showError()
             }
         }
     }
@@ -93,13 +84,12 @@ final class HomeViewController: BaseViewController {
     // MARK: - CollectionView Config
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: view.bounds.width - 32, height: 80) // Biraz daha yüksek yaptık
+        layout.itemSize = CGSize(width: view.bounds.width - 32, height: 80)
         layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        // Kartlar arası dikey boşluk
         layout.minimumLineSpacing = 16
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear // Arka plan rengi gözüksün diye clear yaptık
+        collectionView.backgroundColor = .clear
 
         collectionView.register(
             HomeCell.self,
@@ -122,28 +112,25 @@ final class HomeViewController: BaseViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         
-        // Search Bar Metin Rengi Ayarları
         let searchBar = searchController.searchBar
         searchBar.placeholder = "Karakter Ara"
-        searchBar.tintColor = goldColor // "Cancel" butonu rengi
-        searchBar.barStyle = .black // Koyu tema için (içindeki text beyaz olur)
+        searchBar.tintColor = .hpGold
+        searchBar.barStyle = .black
         
-        // TextField içindeki yazıyı krem rengi yapalım
-        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
-            textField.textColor = creamText
-            textField.backgroundColor = UIColor(white: 1, alpha: 0.1) // Hafif şeffaf arka plan
-            
-            // Placeholder rengi
-            let placeholderAttributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: creamText.withAlphaComponent(0.6)
-            ]
-            textField.attributedPlaceholder = NSAttributedString(string: "Karakter Ara", attributes: placeholderAttributes)
-            
-            // Büyüteç ikonu rengi
-            if let glassIconView = textField.leftView as? UIImageView {
-                glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
-                glassIconView.tintColor = goldColor
-            }
+        let textField = searchBar.searchTextField
+        textField.textColor = .hpCreamText
+        textField.backgroundColor = UIColor(white: 1, alpha: 0.1)
+        
+        // Placeholder Rengi
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.hpCreamTextSecondary
+        ]
+        textField.attributedPlaceholder = NSAttributedString(string: "Karakter Ara", attributes: placeholderAttributes)
+        
+        // Büyüteç İkonu Rengi
+        if let glassIconView = textField.leftView as? UIImageView {
+            glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
+            glassIconView.tintColor = .hpGold 
         }
         
         navigationItem.searchController = searchController
@@ -158,7 +145,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         return 1
     }
     
-    // Bölüm içindeki eleman sayısı karakter sayısı kadar olmalı
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredCharacters.count
     }
@@ -198,7 +184,6 @@ extension HomeViewController : UISearchResultsUpdating {
                 self.filteredCharacters = self.allCharacters
             } else {
                 self.filteredCharacters = self.allCharacters.filter {
-                    // name yerine fullName kullanıyordun, onu korudum
                     $0.fullName.lowercased().contains(searchText.lowercased())
                 }
             }

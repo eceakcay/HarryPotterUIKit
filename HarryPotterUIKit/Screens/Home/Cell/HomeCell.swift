@@ -12,18 +12,15 @@ final class HomeCell: UICollectionViewCell {
     
     static let reuseIdentifier = "HomeCell"
     
-    // MARK: - Theme Colors
-    private let creamText = UIColor(red: 0.96, green: 0.93, blue: 0.86, alpha: 1.0)
-    private let cardBackground = UIColor(red: 0.20, green: 0.08, blue: 0.08, alpha: 1.0)
-    private let goldColor = UIColor(red: 0.85, green: 0.75, blue: 0.45, alpha: 1.0)
-    
     // MARK: - UI Components
     
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0.20, green: 0.08, blue: 0.08, alpha: 1.0)
+        view.backgroundColor = .hpCardBackground // ⬅️ YENİ KULLANIM
         view.layer.cornerRadius = 12
         view.layer.borderWidth = 1
+        // Başlangıç rengi olarak altını veriyoruz, configure'da değişecek
+        view.layer.borderColor = UIColor.hpGold.withAlphaComponent(0.3).cgColor
         
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -39,27 +36,29 @@ final class HomeCell: UICollectionViewCell {
         iv.layer.cornerRadius = 25
         iv.layer.borderWidth = 1.5
         iv.backgroundColor = UIColor(white: 1, alpha: 0.1)
-        iv.tintColor = UIColor(red: 0.85, green: 0.75, blue: 0.45, alpha: 0.6)
+        iv.tintColor = .hpGold.withAlphaComponent(0.6) // ⬅️ YENİ KULLANIM
         return iv
     }()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
+        // Extension eklediysen .withDesign(.serif) kullan, yoksa silip sadece .bold yap
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold).withDesign(.serif)
-        label.textColor = UIColor(red: 0.96, green: 0.93, blue: 0.86, alpha: 1.0)
+        label.textColor = .hpCreamText // ⬅️ YENİ KULLANIM
         return label
     }()
     
     private let houseLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium).withDesign(.serif)
-        label.textColor = UIColor(red: 0.96, green: 0.93, blue: 0.86, alpha: 0.7)
+        label.textColor = .hpCreamTextSecondary // ⬅️ YENİ KULLANIM
         return label
     }()
     
     private let arrowIcon: UIImageView = {
         let iv = UIImageView(image: UIImage(systemName: "chevron.right"))
         iv.contentMode = .scaleAspectFit
+        iv.tintColor = .hpGold // Varsayılan renk
         return iv
     }()
     
@@ -120,8 +119,11 @@ final class HomeCell: UICollectionViewCell {
         nameLabel.text = character.fullName
         houseLabel.text = "🏰 \(character.hogwartsHouse.rawValue)"
         
-        let accentColor = houseColor(character.hogwartsHouse)
+        // ARTIK houseColor fonksiyonuna gerek yok!
+        // Enum'ın kendisi rengini biliyor:
+        let accentColor = character.hogwartsHouse.color // ⬅️ EN GÜZEL KISIM BURASI
         
+        // Hücreyi o binanın rengine göre boyuyoruz
         containerView.layer.borderColor = accentColor.withAlphaComponent(0.6).cgColor
         characterImageView.layer.borderColor = accentColor.cgColor
         arrowIcon.tintColor = accentColor
@@ -131,21 +133,6 @@ final class HomeCell: UICollectionViewCell {
         
         if let url = URL(string: character.image) {
             characterImageView.setImage(from: url.absoluteString)
-        }
-    }
-    
-    // MARK: - House Accent Colors
-    
-    private func houseColor(_ house: HogwartsHouse) -> UIColor {
-        switch house {
-        case .gryffindor:
-            return UIColor(red: 0.55, green: 0.12, blue: 0.15, alpha: 1)
-        case .slytherin:
-            return UIColor(red: 0.10, green: 0.35, blue: 0.25, alpha: 1)
-        case .ravenclaw:
-            return UIColor(red: 0.10, green: 0.20, blue: 0.45, alpha: 1)
-        case .hufflepuff:
-            return UIColor(red: 0.85, green: 0.70, blue: 0.25, alpha: 1)
         }
     }
 }

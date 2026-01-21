@@ -14,11 +14,6 @@ final class CharacterDetailViewController: BaseViewController {
     private let viewModel = CharacterDetailViewModel()
     private let character: CharacterModel
 
-    // MARK: - Theme Colors
-    private let darkBackground = UIColor(red: 0.05, green: 0.07, blue: 0.12, alpha: 1.0)
-    private let cardBackground = UIColor(red: 0.20, green: 0.08, blue: 0.08, alpha: 1.0)
-    private let creamText = UIColor(red: 0.96, green: 0.93, blue: 0.86, alpha: 1.0)
-
     // MARK: - UI Components
 
     private let characterImageView: UIImageView = {
@@ -46,7 +41,7 @@ final class CharacterDetailViewController: BaseViewController {
     private let childrenLabel: UILabel = {
         let label = DetailLabel(fontSize: 16, alpha: 0.85)
         label.numberOfLines = 0
-        label.textAlignment = .left
+        label.textAlignment = .left // Çocuk isimleri alt alta liste gibi duracağı için sola yaslı
         return label
     }()
 
@@ -64,7 +59,7 @@ final class CharacterDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = darkBackground
+        view.backgroundColor = .hpBackground // ⬅️ YENİ: Temadan geliyor
         title = character.fullName
         
         setupUI()
@@ -79,7 +74,7 @@ final class CharacterDetailViewController: BaseViewController {
     // MARK: - Setup UI
     private func setupUI() {
         let container = UIView()
-        container.backgroundColor = cardBackground
+        container.backgroundColor = .hpCardBackground // ⬅️ YENİ
         container.layer.cornerRadius = 24
         container.layer.borderWidth = 1
         
@@ -129,7 +124,9 @@ final class CharacterDetailViewController: BaseViewController {
     // MARK: - Bind Data
     private func bindData() {
         let data = viewModel.makeDetailData(from: character)
-        let accent = houseColor(character.hogwartsHouse)
+        
+        // ⬅️ YENİ: Rengi doğrudan modelden alıyoruz (AppTheme sayesinde)
+        let accent = character.hogwartsHouse.color
         
         nameLabel.text = data.fullName.uppercased()
         nameLabel.textColor = accent
@@ -143,25 +140,33 @@ final class CharacterDetailViewController: BaseViewController {
             ? nil
             : "Children:\n• " + data.childrenText.replacingOccurrences(of: ", ", with: "\n• ")
         
+        // Konteyner çerçevesini de binanın rengine boyayalım
+        if let container = view.subviews.first(where: { $0.backgroundColor == .hpCardBackground }) {
+            container.layer.borderColor = accent.withAlphaComponent(0.5).cgColor
+        }
+        
         characterImageView.layer.borderColor = accent.cgColor
         
         if let url = data.imageURL {
             characterImageView.setImage(from: url.absoluteString)
         }
     }
-    
-    // MARK: - House Colors
-    private func houseColor(_ house: HogwartsHouse) -> UIColor {
-        switch house {
-        case .gryffindor:
-            return UIColor(red: 0.55, green: 0.12, blue: 0.15, alpha: 1)
-        case .slytherin:
-            return UIColor(red: 0.10, green: 0.35, blue: 0.25, alpha: 1)
-        case .ravenclaw:
-            return UIColor(red: 0.10, green: 0.20, blue: 0.45, alpha: 1)
-        case .hufflepuff:
-            return UIColor(red: 0.85, green: 0.70, blue: 0.25, alpha: 1)
-        }
+}
+
+// MARK: - Custom Label
+final class DetailLabel: UILabel {
+    init(fontSize: CGFloat, alpha: CGFloat) {
+        super.init(frame: .zero)
+        // .withDesign(.serif) artık Extensions dosyasından geliyor
+        font = UIFont.systemFont(ofSize: fontSize, weight: .regular).withDesign(.serif)
+        
+        // ⬅️ YENİ: Rengi temadan alıp şeffaflık veriyoruz
+        textColor = UIColor.hpCreamText.withAlphaComponent(alpha)
+        textAlignment = .center
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -176,16 +181,4 @@ extension UIFont {
     }
 }
 
-final class DetailLabel: UILabel {
-    init(fontSize: CGFloat, alpha: CGFloat) {
-        super.init(frame: .zero)
-        font = UIFont.systemFont(ofSize: fontSize, weight: .regular).withDesign(.serif)
-        textColor = UIColor(red: 0.96, green: 0.93, blue: 0.86, alpha: alpha)
-        textAlignment = .center
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
 
