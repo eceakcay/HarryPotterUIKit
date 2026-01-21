@@ -57,7 +57,7 @@ final class MainTabBarController: UITabBarController {
         let compareVC = CompareViewController()
         let compareNav = UINavigationController(rootViewController: compareVC)
         compareNav.tabBarItem = UITabBarItem(
-            title: "compare",
+            title: "Compare",
             image: UIImage(systemName: "rectangle.split.2x1"),
             selectedImage: UIImage(systemName: "rectangle.split.2x1.fill")
         )

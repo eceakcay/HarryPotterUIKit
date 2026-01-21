@@ -37,7 +37,7 @@ final class CharactersViewController: BaseViewController {
     // MARK: - Theme Setup
     private func setupTheme() {
         view.backgroundColor = .hpBackground
-        title = "Karakterler"
+        title = "Characters"
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -109,35 +109,53 @@ final class CharactersViewController: BaseViewController {
     }
     
     // MARK: - Search Bar Config
-    private func configureSearchBar() {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        
-        let searchBar = searchController.searchBar
-        searchBar.placeholder = "Karakter Ara"
-        searchBar.tintColor = .hpGold
-        searchBar.barStyle = .black
-        
-        let textField = searchBar.searchTextField
-        textField.textColor = .hpCreamText
-        textField.backgroundColor = UIColor(white: 1, alpha: 0.1)
-        
-        // Placeholder Rengi
-        let placeholderAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.hpCreamTextSecondary
-        ]
-        textField.attributedPlaceholder = NSAttributedString(string: "Karakter Ara", attributes: placeholderAttributes)
-        
-        // Büyüteç İkonu Rengi
-        if let glassIconView = textField.leftView as? UIImageView {
-            glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
-            glassIconView.tintColor = .hpGold
+        private func configureSearchBar() {
+            let searchController = UISearchController(searchResultsController: nil)
+            searchController.searchResultsUpdater = self
+            searchController.obscuresBackgroundDuringPresentation = false
+            
+            let searchBar = searchController.searchBar
+            searchBar.placeholder = "Search Characters"
+            searchBar.tintColor = .hpGold // "Vazgeç" butonu ve imleç rengi
+            searchBar.barStyle = .black   // Klavye ve sistem ikonlarını koyu moda ayarlar
+            
+            // TextField'a erişiyoruz
+            let textField = searchBar.searchTextField
+            textField.textColor = .hpCreamText
+            
+            // 🛠️ DÜZELTME BURADA:
+            // Eskiden: UIColor(white: 1, alpha: 0.1) -> Bu beyazımsı gri yapıyordu.
+            // Yeni: Kart rengini (.hpCardBackground) veriyoruz.
+            textField.backgroundColor = UIColor.hpCardBackground
+            
+            // İstersen alternatif olarak siyah şeffaf da yapabilirsin:
+            // textField.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+            
+            // Köşeleri biraz daha yumuşatalım
+            textField.layer.cornerRadius = 18
+            textField.clipsToBounds = true
+            
+            // Placeholder Rengi (Soluk Krem)
+            let placeholderAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.hpCreamTextSecondary
+            ]
+            textField.attributedPlaceholder = NSAttributedString(string: "Search Characters", attributes: placeholderAttributes)
+            
+            // 🔍 Sol Taraftaki Büyüteç İkonu Rengi
+            if let glassIconView = textField.leftView as? UIImageView {
+                glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
+                glassIconView.tintColor = .hpGold
+            }
+            
+            // ✖️ Sağ Taraftaki "Temizle" (X) Butonu Rengi
+            if let clearButton = textField.value(forKey: "clearButton") as? UIButton {
+                clearButton.setImage(clearButton.currentImage?.withTintColor(.hpGold, renderingMode: .alwaysOriginal), for: .normal)
+                clearButton.tintColor = .hpGold
+            }
+            
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
         }
-        
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
     
 }
 
