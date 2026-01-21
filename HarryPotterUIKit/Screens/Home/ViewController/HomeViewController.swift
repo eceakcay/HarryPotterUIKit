@@ -10,11 +10,14 @@ import SnapKit
 
 final class HomeViewController: UIViewController {
 
+    // Bölümleri tanımlıyoruz
     private enum Section: Int, CaseIterable {
         case header
         case content
     }
 
+    private let viewModel = HomeViewModel()
+    
     private var collectionView: UICollectionView!
 
     override func viewDidLoad() {
@@ -31,7 +34,7 @@ final class HomeViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 16
         layout.minimumInteritemSpacing = 12
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20) // Kenar boşlukları 16'dan 20'ye çıktı
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20)
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
@@ -40,11 +43,13 @@ final class HomeViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
 
+        // Header Hücresi Kaydı
         collectionView.register(
             HomeHeaderCell.self,
             forCellWithReuseIdentifier: HomeHeaderCell.reuseIdentifier
         )
 
+        // Kart Hücresi Kaydı
         collectionView.register(
             HomeCardCell.self,
             forCellWithReuseIdentifier: HomeCardCell.reuseIdentifier
@@ -58,6 +63,7 @@ final class HomeViewController: UIViewController {
     }
 }
 
+// MARK: - DataSource & Delegate
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -69,8 +75,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         guard let section = Section(rawValue: section) else { return 0 }
 
         switch section {
-        case .header: return 1
-        case .content: return 3
+        case .header:
+            return 1
+        case .content:
+            return viewModel.numberOfItems
         }
     }
 
@@ -93,13 +101,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
                 for: indexPath
             ) as! HomeCardCell
 
-            let type: HomeCardView.CardType
-
-            switch indexPath.item {
-            case 0: type = .characters
-            case 1: type = .books
-            default: type = .houses
-            }
+            let type = viewModel.getItem(at: indexPath.item)
 
             cell.configure(type: type) { [weak self] in
                 self?.handleCardTap(type)
@@ -116,15 +118,15 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         switch type {
         case .characters:
             navigationController?.pushViewController(CharactersViewController(), animated: true)
-            print("Characters tapped")
         case .books:
-            print("Books tapped")
+            print("Books tapped ")
         case .houses:
             print("Houses tapped")
         }
     }
 }
 
+// MARK: - Layout
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath:IndexPath) -> CGSize {
@@ -138,7 +140,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         switch section {
 
         case .header:
-            // Header yüksekliği: Resim + Yazılar için ideal alan
+            // Header yüksekliği
             return CGSize(
                 width: width,
                 height: 340
@@ -146,14 +148,13 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 
         case .content:
             // Kart Genişlik Hesabı:
-            // (Ekran - (Sol 20 + Sağ 20 + Ara 12 + Ara 12)) / 3
             let totalSpacing: CGFloat = 40 + 24
             let availableWidth = width - totalSpacing
             let cardWidth = availableWidth / 3
 
             return CGSize(
                 width: cardWidth,
-                height: 125 // Yükseklik 140'tan 125'e indi (Daha kare, daha şık)
+                height: 125
             )
         }
     }
