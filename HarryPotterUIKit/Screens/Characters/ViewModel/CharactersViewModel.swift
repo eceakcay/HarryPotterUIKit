@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class HomeViewModel {
+final class CharactersViewModel {
     
     private let networkService: NetworkServiceProtocol
     

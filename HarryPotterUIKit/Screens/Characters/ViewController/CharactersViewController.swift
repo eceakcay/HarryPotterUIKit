@@ -8,11 +8,11 @@
 import UIKit
 import SnapKit
 
-final class HomeViewController: BaseViewController {
+final class CharactersViewController: BaseViewController {
 
     // MARK: - Properties
     private var collectionView: UICollectionView!
-    private let viewModel = HomeViewModel()
+    private let viewModel = CharactersViewModel()
     private var allCharacters : [CharacterModel] = []
     private var filteredCharacters: [CharacterModel] = []
     private var searchTimer : Timer?
@@ -30,6 +30,8 @@ final class HomeViewController: BaseViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
+        
+        collectionView.reloadData()
     }
     
     // MARK: - Theme Setup
@@ -92,8 +94,8 @@ final class HomeViewController: BaseViewController {
         collectionView.backgroundColor = .clear
 
         collectionView.register(
-            HomeCell.self,
-            forCellWithReuseIdentifier: HomeCell.reuseIdentifier
+            CharacterCell.self,
+            forCellWithReuseIdentifier: CharacterCell.reuseIdentifier
         )
 
         collectionView.dataSource = self
@@ -130,7 +132,7 @@ final class HomeViewController: BaseViewController {
         // Büyüteç İkonu Rengi
         if let glassIconView = textField.leftView as? UIImageView {
             glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
-            glassIconView.tintColor = .hpGold 
+            glassIconView.tintColor = .hpGold
         }
         
         navigationItem.searchController = searchController
@@ -140,7 +142,7 @@ final class HomeViewController: BaseViewController {
 }
 
 // MARK: - CollectionView DataSource & Delegate
-extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension CharactersViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -151,9 +153,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: HomeCell.reuseIdentifier,
+            withReuseIdentifier: CharacterCell.reuseIdentifier,
             for: indexPath
-        ) as? HomeCell else {
+        ) as? CharacterCell else {
             return UICollectionViewCell()
         }
 
@@ -170,7 +172,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 // MARK: - Search Logic
-extension HomeViewController : UISearchResultsUpdating {
+extension CharactersViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""

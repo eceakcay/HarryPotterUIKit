@@ -59,11 +59,12 @@ final class CharacterDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .hpBackground // ⬅️ YENİ: Temadan geliyor
+        view.backgroundColor = .hpBackground
         title = character.fullName
         
         setupUI()
         bindData()
+        setupFavoriteButton()
     }
     
     override func viewDidLayoutSubviews() {
@@ -125,7 +126,6 @@ final class CharacterDetailViewController: BaseViewController {
     private func bindData() {
         let data = viewModel.makeDetailData(from: character)
         
-        // ⬅️ YENİ: Rengi doğrudan modelden alıyoruz (AppTheme sayesinde)
         let accent = character.hogwartsHouse.color
         
         nameLabel.text = data.fullName.uppercased()
@@ -151,16 +151,38 @@ final class CharacterDetailViewController: BaseViewController {
             characterImageView.setImage(from: url.absoluteString)
         }
     }
+    
+    //MARK: - Favorite Button
+    private func setupFavoriteButton() {
+        let isFav = FavoritesManager.shared.isFavorite(id: character.index)
+        let icon = isFav ? "heart.fill" : "heart"
+        
+        let button = UIBarButtonItem(
+            image: UIImage(systemName: icon),
+            style: .plain,
+            target: self,
+            action: #selector(favoriteTapped)
+            )
+        
+        button.tintColor = character.hogwartsHouse.color
+        navigationItem.rightBarButtonItem = button
+    }
+    
+    @objc private func favoriteTapped() {
+        FavoritesManager.shared.toggleFavorite(id: character.index)
+        
+        let isFav = FavoritesManager.shared.isFavorite(id: character.index)
+        let icon = isFav ? "heart.fill" : "heart"
+        
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: icon)
+    }
 }
 
 // MARK: - Custom Label
 final class DetailLabel: UILabel {
     init(fontSize: CGFloat, alpha: CGFloat) {
         super.init(frame: .zero)
-        // .withDesign(.serif) artık Extensions dosyasından geliyor
         font = UIFont.systemFont(ofSize: fontSize, weight: .regular).withDesign(.serif)
-        
-        // ⬅️ YENİ: Rengi temadan alıp şeffaflık veriyoruz
         textColor = UIColor.hpCreamText.withAlphaComponent(alpha)
         textAlignment = .center
     }

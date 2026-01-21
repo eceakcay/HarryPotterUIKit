@@ -20,7 +20,7 @@ final class AppCoordinator {
     }
     
     func start() {
-        let homeVC = HomeViewController()
+        let homeVC = CharactersViewController()
         navigationController.setViewControllers([homeVC], animated: false) //navigasyon kontrolcüsünün ilk ekranı
         
         window.rootViewController = navigationController

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class HomeCell: UICollectionViewCell {
+final class CharacterCell: UICollectionViewCell {
     
     static let reuseIdentifier = "HomeCell"
     
@@ -16,7 +16,7 @@ final class HomeCell: UICollectionViewCell {
     
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .hpCardBackground // ⬅️ YENİ KULLANIM
+        view.backgroundColor = .hpCardBackground
         view.layer.cornerRadius = 12
         view.layer.borderWidth = 1
         // Başlangıç rengi olarak altını veriyoruz, configure'da değişecek
@@ -36,7 +36,7 @@ final class HomeCell: UICollectionViewCell {
         iv.layer.cornerRadius = 25
         iv.layer.borderWidth = 1.5
         iv.backgroundColor = UIColor(white: 1, alpha: 0.1)
-        iv.tintColor = .hpGold.withAlphaComponent(0.6) // ⬅️ YENİ KULLANIM
+        iv.tintColor = .hpGold.withAlphaComponent(0.6)
         return iv
     }()
     
@@ -44,22 +44,29 @@ final class HomeCell: UICollectionViewCell {
         let label = UILabel()
         // Extension eklediysen .withDesign(.serif) kullan, yoksa silip sadece .bold yap
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold).withDesign(.serif)
-        label.textColor = .hpCreamText // ⬅️ YENİ KULLANIM
+        label.textColor = .hpCreamText
         return label
     }()
     
     private let houseLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium).withDesign(.serif)
-        label.textColor = .hpCreamTextSecondary // ⬅️ YENİ KULLANIM
+        label.textColor = .hpCreamTextSecondary
         return label
     }()
     
-    private let arrowIcon: UIImageView = {
-        let iv = UIImageView(image: UIImage(systemName: "chevron.right"))
-        iv.contentMode = .scaleAspectFit
-        iv.tintColor = .hpGold // Varsayılan renk
-        return iv
+   // private let arrowIcon: UIImageView = {
+    //    let iv = UIImageView(image: UIImage(systemName: "chevron.right"))
+    //    iv.contentMode = .scaleAspectFit
+      //  iv.tintColor = .hpGold
+        //return iv
+    //}()
+    
+    private let favoriteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.tintColor = .systemRed
+        return button
     }()
     
     // MARK: - Init
@@ -82,7 +89,8 @@ final class HomeCell: UICollectionViewCell {
         containerView.addSubview(characterImageView)
         containerView.addSubview(nameLabel)
         containerView.addSubview(houseLabel)
-        containerView.addSubview(arrowIcon)
+ //       containerView.addSubview(arrowIcon)
+        containerView.addSubview(favoriteButton)
         
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -94,15 +102,15 @@ final class HomeCell: UICollectionViewCell {
             $0.width.height.equalTo(50)
         }
         
-        arrowIcon.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(12)
-            $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(16)
-        }
+   //     arrowIcon.snp.makeConstraints {
+     //       $0.trailing.equalToSuperview().inset(12)
+       //     $0.centerY.equalToSuperview()
+         //   $0.width.height.equalTo(16)
+       // }
         
         nameLabel.snp.makeConstraints {
             $0.leading.equalTo(characterImageView.snp.trailing).offset(12)
-            $0.trailing.equalTo(arrowIcon.snp.leading).offset(-8)
+         //   $0.trailing.equalTo(arrowIcon.snp.leading).offset(-8)
             $0.top.equalTo(characterImageView.snp.top).offset(2)
         }
         
@@ -110,6 +118,12 @@ final class HomeCell: UICollectionViewCell {
             $0.leading.equalTo(nameLabel)
             $0.trailing.equalTo(nameLabel)
             $0.top.equalTo(nameLabel.snp.bottom).offset(4)
+        }
+        
+        favoriteButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(12)
+            $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(24)
         }
     }
     
@@ -119,14 +133,12 @@ final class HomeCell: UICollectionViewCell {
         nameLabel.text = character.fullName
         houseLabel.text = "🏰 \(character.hogwartsHouse.rawValue)"
         
-        // ARTIK houseColor fonksiyonuna gerek yok!
-        // Enum'ın kendisi rengini biliyor:
-        let accentColor = character.hogwartsHouse.color // ⬅️ EN GÜZEL KISIM BURASI
+        let accentColor = character.hogwartsHouse.color
         
         // Hücreyi o binanın rengine göre boyuyoruz
         containerView.layer.borderColor = accentColor.withAlphaComponent(0.6).cgColor
         characterImageView.layer.borderColor = accentColor.cgColor
-        arrowIcon.tintColor = accentColor
+      //  arrowIcon.tintColor = accentColor
         
         // Placeholder
         characterImageView.image = UIImage(systemName: "person.crop.circle")
@@ -134,5 +146,21 @@ final class HomeCell: UICollectionViewCell {
         if let url = URL(string: character.image) {
             characterImageView.setImage(from: url.absoluteString)
         }
+        
+        let isFav = FavoritesManager.shared.isFavorite(id: character.index)
+        let icon = isFav ? "heart.fill" : "heart"
+        favoriteButton.setImage(UIImage(systemName: icon), for: .normal)
+        
+        favoriteButton.tag = character.index
+        favoriteButton.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
+    }
+    
+    @objc private func favoriteTapped(_ sender: UIButton) {
+        FavoritesManager.shared.toggleFavorite(id: sender.tag)
+        
+        let isFav = FavoritesManager.shared.isFavorite(id: sender.tag)
+        let icon = isFav ? "heart.fill" : "heart"
+        
+        sender.setImage(UIImage(systemName: icon), for: .normal)
     }
 }
