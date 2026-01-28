@@ -56,7 +56,43 @@ final class BookCell: UICollectionViewCell {
     }
     
     private func setupUI() {
+        contentView.backgroundColor = .clear
+        contentView.addSubview(containerView)
         
+        containerView.addSubview(coverImageView)
+        containerView.addSubview(titleLabel)
+        containerView.addSubview(infoLabel)
+        
+        containerView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        coverImageView.snp.makeConstraints {
+            $0.leading.top.bottom.equalToSuperview().inset(12)
+            $0.width.equalTo(80)
+        }
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(16)
+            $0.leading.equalTo(coverImageView.snp.trailing).offset(12)
+            $0.trailing.equalToSuperview().inset(12)
+        }
+
+        infoLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.leading.trailing.equalTo(titleLabel)
+        }
+    }
+    
+    func configure(with book: Book) {
+        titleLabel.text = book.title
+        infoLabel.text = "📅 \(book.releaseDate) • 📖 \(book.pages) pages"
+        
+        coverImageView.image = UIImage(systemName: "book.closed")
+        
+        if let url = URL(string: book.cover) {
+            coverImageView.setImage(from: url.absoluteString)
+        }
     }
     
 }
