@@ -8,33 +8,32 @@
 import Foundation
 
 final class FavoritesManager {
-    
     static let shared = FavoritesManager()
-    private let key = "favorite_characters"
+    private let key = "FavoriteCharacterIDs" // Hafıza anahtarı
     
     private init() {}
     
-    //Hafızadaki favori listesini getirir.
-    func getFavorites() -> [Int] {
-        UserDefaults.standard.array(forKey: key) as? [Int] ?? []
-    }
-    
-   //Bir karakterin favori olup olmadığını kontrol eder.(favori listesi üzerinden)
+    // Favori mi diye kontrol et
     func isFavorite(id: Int) -> Bool {
-        getFavorites().contains(id)
+        let savedIds = getFavorites()
+        return savedIds.contains(id)
     }
     
-    //Kullanıcı kalp butonuna bastığında bu fonksiyon çalışır. Karakter zaten favoriyse siler, değilse ekler.
+    // Ekle / Çıkar
     func toggleFavorite(id: Int) {
-        var favorites = getFavorites()
+        var savedIds = getFavorites()
         
-        if favorites.contains(id) {//favoriyse sil
-            favorites.removeAll { $0 == id }
-        } else {//Değilse, favorilere ekle
-            favorites.append(id)
+        if savedIds.contains(id) {
+            savedIds.removeAll { $0 == id } // Varsa sil
+        } else {
+            savedIds.append(id) // Yoksa ekle
         }
         
-        UserDefaults.standard.set(favorites, forKey: key)
+        UserDefaults.standard.set(savedIds, forKey: key)
+    }
+    
+    // Kayıtlı listeyi getir
+    func getFavorites() -> [Int] {
+        return UserDefaults.standard.array(forKey: key) as? [Int] ?? []
     }
 }
-

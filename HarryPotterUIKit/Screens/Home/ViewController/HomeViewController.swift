@@ -23,12 +23,21 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .hpBackground
-        
-        // Navigation Bar'ı gizle (Custom Header kullanıyoruz)
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        
         configureCollectionView()
     }
+    
+    // DÜZELTME 1: Navigation Bar yönetimini buraya taşıdık.
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            // Bu sayfaya her döndüğümüzde barı gizle
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
+
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            // Bu sayfadan çıkarken (başka sayfaya giderken) barı geri getir
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+        }
 
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -111,17 +120,14 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         }
     }
     
-    private func handleCardTap(_ type: HomeCardView.CardType) {
-        // Detay sayfasına giderken Nav Bar geri gelsin
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        
+    private func handleCardTap(_ type: HomeCardView.CardType) {        
         switch type {
         case .characters:
             navigationController?.pushViewController(CharactersViewController(), animated: true)
         case .books:
-            print("Books tapped ")
+            navigationController?.pushViewController(BooksViewController(), animated: true)
         case .houses:
-            print("Houses tapped")
+            navigationController?.pushViewController(HouseViewController(), animated: true)
         }
     }
 }

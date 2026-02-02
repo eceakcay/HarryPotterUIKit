@@ -1,5 +1,5 @@
 //
-//  HomeCell.swift
+//  CharacterCell.swift
 //  HarryPotterUIKit
 //
 //  Created by Ece Akcay on 16.01.2026.
@@ -11,6 +11,9 @@ import SnapKit
 final class CharacterCell: UICollectionViewCell {
     
     static let reuseIdentifier = "HomeCell"
+    
+    // Callback: Butona basıldığında dışarıya (ViewController'a) haber vermek için
+    var onFavoriteTapped: (() -> Void)?
     
     // MARK: - UI Components
     
@@ -55,12 +58,7 @@ final class CharacterCell: UICollectionViewCell {
         return label
     }()
     
-   // private let arrowIcon: UIImageView = {
-    //    let iv = UIImageView(image: UIImage(systemName: "chevron.right"))
-    //    iv.contentMode = .scaleAspectFit
-      //  iv.tintColor = .hpGold
-        //return iv
-    //}()
+    // private let arrowIcon... (Yorum satırı olarak kalsın)
     
     private let favoriteButton: UIButton = {
         let button = UIButton(type: .system)
@@ -89,9 +87,13 @@ final class CharacterCell: UICollectionViewCell {
         containerView.addSubview(characterImageView)
         containerView.addSubview(nameLabel)
         containerView.addSubview(houseLabel)
- //       containerView.addSubview(arrowIcon)
+        // containerView.addSubview(arrowIcon)
         containerView.addSubview(favoriteButton)
         
+        // Buton aksiyonunu burada sadece BİR kere ekliyoruz
+        favoriteButton.addTarget(self, action: #selector(handleFavoriteButtonTap), for: .touchUpInside)
+        
+        // Constraints
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -102,15 +104,8 @@ final class CharacterCell: UICollectionViewCell {
             $0.width.height.equalTo(50)
         }
         
-   //     arrowIcon.snp.makeConstraints {
-     //       $0.trailing.equalToSuperview().inset(12)
-       //     $0.centerY.equalToSuperview()
-         //   $0.width.height.equalTo(16)
-       // }
-        
         nameLabel.snp.makeConstraints {
             $0.leading.equalTo(characterImageView.snp.trailing).offset(12)
-         //   $0.trailing.equalTo(arrowIcon.snp.leading).offset(-8)
             $0.top.equalTo(characterImageView.snp.top).offset(2)
         }
         
@@ -127,6 +122,13 @@ final class CharacterCell: UICollectionViewCell {
         }
     }
     
+    // MARK: - Actions
+    
+    @objc private func handleFavoriteButtonTap() {
+        // Butona basılınca closure'ı tetikle
+        onFavoriteTapped?()
+    }
+    
     // MARK: - Configure
     
     func configure(with character: CharacterModel) {
@@ -138,7 +140,6 @@ final class CharacterCell: UICollectionViewCell {
         // Hücreyi o binanın rengine göre boyuyoruz
         containerView.layer.borderColor = accentColor.withAlphaComponent(0.6).cgColor
         characterImageView.layer.borderColor = accentColor.cgColor
-      //  arrowIcon.tintColor = accentColor
         
         // Placeholder
         characterImageView.image = UIImage(systemName: "person.crop.circle")
@@ -147,20 +148,33 @@ final class CharacterCell: UICollectionViewCell {
             characterImageView.setImage(from: url.absoluteString)
         }
         
+        // --- FAVORİ LOGIC ---
+        
+        // 1. Mevcut durumu kontrol et ve ikonu ayarla
         let isFav = FavoritesManager.shared.isFavorite(id: character.index)
-        let icon = isFav ? "heart.fill" : "heart"
-        favoriteButton.setImage(UIImage(systemName: icon), for: .normal)
+        let iconName = isFav ? "heart.fill" : "heart"
+        favoriteButton.setImage(UIImage(systemName: iconName), for: .normal)
         
-        favoriteButton.tag = character.index
-        favoriteButton.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
-    }
-    
-    @objc private func favoriteTapped(_ sender: UIButton) {
-        FavoritesManager.shared.toggleFavorite(id: sender.tag)
-        
-        let isFav = FavoritesManager.shared.isFavorite(id: sender.tag)
-        let icon = isFav ? "heart.fill" : "heart"
-        
-        sender.setImage(UIImage(systemName: icon), for: .normal)
+        // 2. Closure tanımla: Butona basıldığında ne yapılacak?
+        self.onFavoriteTapped = { [weak self] in
+            guard let self = self else { return }
+            
+            // Manager'da durumu değiştir (Ekle/Çıkar)
+            FavoritesManager.shared.toggleFavorite(id: character.index)
+            
+            // Yeni durumu kontrol et
+            let newStatus = FavoritesManager.shared.isFavorite(id: character.index)
+            let newIcon = newStatus ? "heart.fill" : "heart"
+            
+            // İkonu hemen güncelle (Animasyonlu)
+            UIView.animate(withDuration: 0.1) {
+                self.favoriteButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            } completion: { _ in
+                self.favoriteButton.setImage(UIImage(systemName: newIcon), for: .normal)
+                UIView.animate(withDuration: 0.1) {
+                    self.favoriteButton.transform = .identity
+                }
+            }
+        }
     }
 }
