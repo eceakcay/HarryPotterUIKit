@@ -19,8 +19,6 @@ extension UIColor {
 }
 
 // MARK: - Hogwarts Binalarına Özel Renkler
-// Model dosyasındaki enum'a eklenti yapıyoruz.
-// Artık her bina kendi rengini biliyor!
 extension HogwartsHouse {
     
     var color: UIColor {
@@ -33,6 +31,8 @@ extension HogwartsHouse {
             return UIColor(red: 0.10, green: 0.20, blue: 0.45, alpha: 1) // Safir Mavisi
         case .hufflepuff:
             return UIColor(red: 0.85, green: 0.70, blue: 0.25, alpha: 1) // Kanarya Sarısı
+        case .unknown:
+            return UIColor.systemGray // Bilinmeyen bina için Nötr Gri
         }
     }
 }

@@ -15,8 +15,6 @@ final class CompareSelectionViewController: BaseViewController {
     private let viewModel = CompareSelectionViewModel()
     
     private var characters: [CharacterModel] = []
-    
-    // Seçilenleri takip ettiğimiz liste
     private var selectedCharacters: [CharacterModel] = []
     
     // MARK: - UI Elements
@@ -27,7 +25,6 @@ final class CompareSelectionViewController: BaseViewController {
         button.backgroundColor = .hpGold
         button.setTitleColor(.black, for: .normal)
         button.layer.cornerRadius = 14
-        // Gölge efekti (Buton havada dursun)
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOpacity = 0.4
         button.layer.shadowOffset = CGSize(width: 0, height: 4)
@@ -90,9 +87,6 @@ final class CompareSelectionViewController: BaseViewController {
             $0.edges.equalToSuperview()
         }
         
-        // KRİTİK DÜZELTME: Listenin altına boşluk bırakıyoruz
-        // Böylece en alttaki karakter butonun arkasında kalmıyor.
-        // Buton Yüksekliği (56) + Bottom Padding (32) + Biraz Pay = 100
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
     }
     
@@ -125,9 +119,8 @@ final class CompareSelectionViewController: BaseViewController {
     @objc private func compareTapped() {
         guard selectedCharacters.count == 2 else { return }
         
-        // Sonraki derste yapacağımız ekran:
-        // let resultVC = CompareResultViewController(p1: selectedCharacters[0], p2: selectedCharacters[1])
-        // navigationController?.pushViewController(resultVC, animated: true)
+         let resultVC = CompareResultViewController(leftCharacter: selectedCharacters[0], rightCharacter: selectedCharacters[1])
+         navigationController?.pushViewController(resultVC, animated: true)
         
         print("⚔️ Kıyaslama Başlıyor: \(selectedCharacters[0].fullName) vs \(selectedCharacters[1].fullName)")
     }
@@ -148,10 +141,8 @@ extension CompareSelectionViewController: UICollectionViewDataSource, UICollecti
     
     // Hücre Seçilince
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Eğer zaten 2 kişi seçiliyse, 3.'yü seçtirme
         if selectedCharacters.count >= 2 {
             collectionView.deselectItem(at: indexPath, animated: true)
-            // İstersen burada kullanıcıya "En fazla 2 kişi seçebilirsin" uyarısı verebilirsin
             return
         }
         
