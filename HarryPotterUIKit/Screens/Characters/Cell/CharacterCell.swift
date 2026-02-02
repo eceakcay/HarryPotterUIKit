@@ -121,7 +121,30 @@ final class CharacterCell: UICollectionViewCell {
             $0.width.height.equalTo(24)
         }
     }
+        // MARK: - Selection State
     
+        override var isSelected: Bool {
+            didSet {
+                if isSelected {
+                    containerView.layer.borderColor = UIColor.hpGold.cgColor
+                    containerView.layer.borderWidth = 3
+                    containerView.backgroundColor = UIColor.hpGold.withAlphaComponent(0.15)
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
+                    }
+                } else {
+                    let houseColor = UIColor.darkGray
+                    containerView.layer.borderWidth = 1
+                    containerView.layer.borderColor = UIColor.hpGold.withAlphaComponent(0.3).cgColor
+                    containerView.backgroundColor = .hpCardBackground
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.transform = .identity
+                    }
+                }
+            }
+        }
     // MARK: - Actions
     
     @objc private func handleFavoriteButtonTap() {

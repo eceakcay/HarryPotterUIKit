@@ -1,13 +1,13 @@
 //
-//  CompareViewController.swift
+//  CompareResultViewController.swift
 //  HarryPotterUIKit
 //
-//  Created by Ece Akcay on 19.01.2026.
+//  Created by Ece Akcay on 2.02.2026.
 //
 
 import UIKit
 
-class CompareViewController: UIViewController {
+class CompareResultViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

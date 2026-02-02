@@ -54,7 +54,7 @@ final class MainTabBarController: UITabBarController {
         )
         
         // 4️⃣ COMPARE
-        let compareVC = CompareViewController()
+        let compareVC = CompareSelectionViewController()
         let compareNav = UINavigationController(rootViewController: compareVC)
         compareNav.tabBarItem = UITabBarItem(
             title: "Compare",
