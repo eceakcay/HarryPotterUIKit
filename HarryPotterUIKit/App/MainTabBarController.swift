@@ -45,13 +45,13 @@ final class MainTabBarController: UITabBarController {
         )
         
         // 3️⃣ FAVORITES
-        let favoritesVC = FavoritesViewController()
-        let favoritesNav = UINavigationController(rootViewController: favoritesVC)
-        favoritesNav.tabBarItem = UITabBarItem(
-            title: "Favorites",
-            image: UIImage(systemName: "heart"),
-            selectedImage: UIImage(systemName: "heart.fill")
-        )
+     //   let favoritesVC = FavoritesViewController()
+       // let favoritesNav = UINavigationController(rootViewController: favoritesVC)
+      //  favoritesNav.tabBarItem = UITabBarItem(
+        //    title: "Favorites",
+          //  image: UIImage(systemName: "heart"),
+           // selectedImage: UIImage(systemName: "heart.fill")
+        //)
         
         // 4️⃣ COMPARE
         let compareVC = CompareSelectionViewController()
@@ -62,6 +62,6 @@ final class MainTabBarController: UITabBarController {
             selectedImage: UIImage(systemName: "rectangle.split.2x1.fill")
         )
         
-        viewControllers = [homeNav, characterNav, favoritesNav, compareNav]
+        viewControllers = [homeNav, characterNav, compareNav]
     }
 }

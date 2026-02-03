@@ -39,11 +39,10 @@ final class CompareAIViewController: BaseViewController {
         view.layer.shadowOffset = CGSize(width: 0, height: 4)
         view.layer.shadowRadius = 8
         
-        view.alpha = 0 // Başlangıçta gizli (Animasyonla gelecek)
+        view.alpha = 0
         return view
     }()
     
-    // 3. İçerikleri Düzenleyen StackView
     private let contentStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -52,7 +51,6 @@ final class CompareAIViewController: BaseViewController {
         return stack
     }()
 
-    // 4. Kazanan Rozeti
     private let winnerBadgeLabel: UILabel = {
         let label = UILabel()
         label.text = "🏆 WINNER"
@@ -65,14 +63,12 @@ final class CompareAIViewController: BaseViewController {
         return label
     }()
     
-    // 5. Kazananın İsmi (Büyük Yazı)
     private let winnerNameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 28, weight: .bold).withDesign(.serif)
         label.textColor = .white
         label.textAlignment = .center
         label.numberOfLines = 0
-        // Parlama efekti için hafif gölge
         label.layer.shadowColor = UIColor.hpGold.cgColor
         label.layer.shadowRadius = 10
         label.layer.shadowOpacity = 0.5
@@ -80,14 +76,12 @@ final class CompareAIViewController: BaseViewController {
         return label
     }()
     
-    // 6. Ayırıcı Çizgi
     private let dividerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.hpGold.withAlphaComponent(0.3)
         return view
     }()
     
-    // 7. Sebep Başlığı
     private let reasonTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "📜 The Verdict"
@@ -96,7 +90,6 @@ final class CompareAIViewController: BaseViewController {
         return label
     }()
     
-    // 8. Açıklama Metni
     private let reasonTextLabel: UILabel = {
         let label = UILabel()
         label.font = .italicSystemFont(ofSize: 16)
@@ -128,17 +121,14 @@ final class CompareAIViewController: BaseViewController {
         view.addSubview(titleLabel)
         view.addSubview(resultCardView)
         
-        // Kartın içine StackView ekle
         resultCardView.addSubview(contentStack)
         
-        // StackView'a elemanları sırayla ekle
         contentStack.addArrangedSubview(winnerBadgeLabel)
         contentStack.addArrangedSubview(winnerNameLabel)
         contentStack.addArrangedSubview(dividerView)
         contentStack.addArrangedSubview(reasonTitleLabel)
         contentStack.addArrangedSubview(reasonTextLabel)
         
-        // --- Constraints ---
         
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(32)
@@ -152,10 +142,9 @@ final class CompareAIViewController: BaseViewController {
         }
         
         contentStack.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(24) // Kartın iç boşluğu
+            $0.edges.equalToSuperview().inset(24)
         }
         
-        // Özel boyutlandırmalar
         winnerBadgeLabel.snp.makeConstraints {
             $0.width.equalTo(100)
             $0.height.equalTo(24)

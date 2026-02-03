@@ -12,10 +12,8 @@ final class FavoritesViewController: BaseViewController {
     
     private var collectionView: UICollectionView!
     
-    // ViewModel Tanımlaması
     private let viewModel = FavoritesViewModel()
     
-    // Ekranda gösterilecek filtrelenmiş liste
     private var favoriteCharacters: [CharacterModel] = []
     
     override func viewDidLoad() {
@@ -23,7 +21,6 @@ final class FavoritesViewController: BaseViewController {
         title = "Favorites"
         
         configureCollectionView()
-        // viewDidLoad'da çağırmamıza gerek yok, viewWillAppear her seferinde halledecek.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,7 +29,6 @@ final class FavoritesViewController: BaseViewController {
     }
     
     private func configureCollectionView() {
-        // ... (Burası aynı kalıyor) ...
         let layout = UICollectionViewFlowLayout()
         let width = UIScreen.main.bounds.width - 32
         layout.itemSize = CGSize(width: width, height: 100)
@@ -54,8 +50,6 @@ final class FavoritesViewController: BaseViewController {
         
         Task {
             do {
-                // ARTIK NETWORK YOK -> ViewModel VAR
-                // ViewModel bize hazır filtrelenmiş veriyi verir
                 let favorites = try await viewModel.fetchFavorites()
                 
                 await MainActor.run {
@@ -63,9 +57,7 @@ final class FavoritesViewController: BaseViewController {
                     self.collectionView.reloadData()
                     self.hideLoading()
                     
-                    // Liste boşsa kullanıcıya bilgi verilebilir (Opsiyonel)
                     if self.favoriteCharacters.isEmpty {
-                        // showEmptyState()
                     }
                 }
             } catch {
@@ -91,14 +83,11 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         let character = favoriteCharacters[indexPath.item]
         cell.configure(with: character)
         
-        // Favoriden çıkarma işlemi
         cell.onFavoriteTapped = { [weak self] in
             guard let self = self else { return }
             
-            // 1. Manager'dan sil
             FavoritesManager.shared.toggleFavorite(id: character.index)
             
-            // 2. Listeyi Yenile (ViewModel tekrar filtreleyip getirecek)
             self.loadFavorites()
         }
         

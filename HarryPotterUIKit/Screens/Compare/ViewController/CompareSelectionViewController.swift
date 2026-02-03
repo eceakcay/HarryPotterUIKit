@@ -111,7 +111,6 @@ final class CompareSelectionViewController: BaseViewController {
         UIView.animate(withDuration: 0.3) {
             self.compareButton.isEnabled = isReady
             self.compareButton.alpha = isReady ? 1.0 : 0.5
-            // Hazır olunca buton biraz büyüsün
             self.compareButton.transform = isReady ? CGAffineTransform(scaleX: 1.05, y: 1.05) : .identity
         }
     }

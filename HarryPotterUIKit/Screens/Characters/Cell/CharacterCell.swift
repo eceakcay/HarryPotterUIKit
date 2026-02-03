@@ -12,7 +12,6 @@ final class CharacterCell: UICollectionViewCell {
     
     static let reuseIdentifier = "HomeCell"
     
-    // Callback: Butona basıldığında dışarıya (ViewController'a) haber vermek için
     var onFavoriteTapped: (() -> Void)?
     
     // MARK: - UI Components
@@ -22,9 +21,7 @@ final class CharacterCell: UICollectionViewCell {
         view.backgroundColor = .hpCardBackground
         view.layer.cornerRadius = 12
         view.layer.borderWidth = 1
-        // Başlangıç rengi olarak altını veriyoruz, configure'da değişecek
         view.layer.borderColor = UIColor.hpGold.withAlphaComponent(0.3).cgColor
-        
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowOpacity = 0.3
@@ -45,7 +42,6 @@ final class CharacterCell: UICollectionViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        // Extension eklediysen .withDesign(.serif) kullan, yoksa silip sadece .bold yap
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold).withDesign(.serif)
         label.textColor = .hpCreamText
         return label
@@ -58,7 +54,6 @@ final class CharacterCell: UICollectionViewCell {
         return label
     }()
     
-    // private let arrowIcon... (Yorum satırı olarak kalsın)
     
     private let favoriteButton: UIButton = {
         let button = UIButton(type: .system)
@@ -87,10 +82,8 @@ final class CharacterCell: UICollectionViewCell {
         containerView.addSubview(characterImageView)
         containerView.addSubview(nameLabel)
         containerView.addSubview(houseLabel)
-        // containerView.addSubview(arrowIcon)
         containerView.addSubview(favoriteButton)
         
-        // Buton aksiyonunu burada sadece BİR kere ekliyoruz
         favoriteButton.addTarget(self, action: #selector(handleFavoriteButtonTap), for: .touchUpInside)
         
         // Constraints
@@ -148,7 +141,6 @@ final class CharacterCell: UICollectionViewCell {
     // MARK: - Actions
     
     @objc private func handleFavoriteButtonTap() {
-        // Butona basılınca closure'ı tetikle
         onFavoriteTapped?()
     }
     
@@ -189,7 +181,7 @@ final class CharacterCell: UICollectionViewCell {
             let newStatus = FavoritesManager.shared.isFavorite(id: character.index)
             let newIcon = newStatus ? "heart.fill" : "heart"
             
-            // İkonu hemen güncelle (Animasyonlu)
+            // İkonu hemen güncelle
             UIView.animate(withDuration: 0.1) {
                 self.favoriteButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             } completion: { _ in

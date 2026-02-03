@@ -17,7 +17,6 @@ final class HomeCardCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .clear
-        // Hücre dışına taşan gölgeler kesilmesin diye:
         contentView.clipsToBounds = false
         clipsToBounds = false
     }
