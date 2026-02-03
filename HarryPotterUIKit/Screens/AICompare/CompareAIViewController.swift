@@ -98,6 +98,25 @@ final class CompareAIViewController: BaseViewController {
         label.numberOfLines = 0
         return label
     }()
+    
+    private let thinkingStack: UIStackView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.startAnimating()
+        spinner.color = .hpGold
+
+        let label = UILabel()
+        label.text = "🧙‍♂️ Sorting Hat is thinking..."
+        label.font = .systemFont(ofSize: 16, weight: .medium).withDesign(.serif)
+        label.textColor = .hpCreamText
+        label.textAlignment = .center
+
+        let stack = UIStackView(arrangedSubviews: [spinner, label])
+        stack.axis = .vertical
+        stack.spacing = 16
+        stack.alignment = .center
+        return stack
+    }()
+
 
     // MARK: - Init
     init(left: CharacterModel, right: CharacterModel) {
@@ -114,12 +133,14 @@ final class CompareAIViewController: BaseViewController {
         view.backgroundColor = .hpBackground
         setupUI()
         runAIComparison()
+        resultCardView.isHidden = true
     }
 
     // MARK: - Setup UI
     private func setupUI() {
         view.addSubview(titleLabel)
         view.addSubview(resultCardView)
+        view.addSubview(thinkingStack)
         
         resultCardView.addSubview(contentStack)
         
@@ -152,8 +173,13 @@ final class CompareAIViewController: BaseViewController {
         
         dividerView.snp.makeConstraints {
             $0.height.equalTo(1)
-            $0.width.equalTo(100) // Çizgi genişliği
+            $0.width.equalTo(100)
         }
+        
+        thinkingStack.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+
     }
 
     // MARK: - AI Logic
@@ -169,7 +195,7 @@ final class CompareAIViewController: BaseViewController {
 
                 await MainActor.run {
                     self.hideLoading()
-                    self.updateUI(with: result)
+                    self.showResult(result)
                 }
 
             } catch {
@@ -181,19 +207,44 @@ final class CompareAIViewController: BaseViewController {
         }
     }
     
-    private func updateUI(with result: AICompareResult) {
-        // Verileri doldur
-        winnerNameLabel.text = result.winner
-        reasonTextLabel.text = "\"\(result.reason)\""
-        
-        // Animasyonlu Görünüm
-        resultCardView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5) {
+    private func showResult(_ result: AICompareResult) {
+        thinkingStack.removeFromSuperview()
+
+        updateUI(with: result)
+
+        resultCardView.isHidden = false
+        resultCardView.alpha = 0
+        resultCardView.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+
+        UIView.animate(
+            withDuration: 0.6,
+            delay: 0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.6
+        ) {
             self.resultCardView.alpha = 1
             self.resultCardView.transform = .identity
         }
     }
+
+    
+    private func updateUI(with result: AICompareResult) {
+        winnerNameLabel.text = result.winner
+        reasonTextLabel.text = "\"\(result.reason)\""
+
+        let glowColor: UIColor
+        if result.winner == left.fullName {
+            glowColor = left.hogwartsHouse.color
+        } else {
+            glowColor = right.hogwartsHouse.color
+        }
+
+        resultCardView.layer.shadowColor = glowColor.cgColor
+        resultCardView.layer.shadowRadius = 20
+        resultCardView.layer.shadowOpacity = 0.8
+        resultCardView.layer.shadowOffset = .zero
+    }
+
     
     private func showErrorState(message: String) {
         winnerNameLabel.text = "Connection Severed"
