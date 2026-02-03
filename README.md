@@ -128,15 +128,10 @@ git clone https://github.com/eceakcay/HarryPotterUIKit.git
 HarryPotterUIKit.xcodeproj dosyasına çift tıklayarak projeyi Xcode'da açın.
 
 ### 3. API Anahtarı Yapılandırması 🔑
-Bu proje Google Gemini API kullanmaktadır. Çalışması için geçerli bir API anahtarına ihtiyacınız vardır.
-
-Google AI Studio üzerinden bir API Key edinin.
-
-Proje içerisindeki Info.plist dosyasına gidin (veya Secrets.xcconfig dosyası oluşturun).
-
-API anahtarınızı ilgili alana ekleyin.
-
-⚠️ Önemli Not: API anahtarınızı içeren dosyaları asla public commit olarak göndermeyin.
+-Bu proje Google Gemini API kullanmaktadır. Çalışması için geçerli bir API anahtarına ihtiyacınız vardır.
+-Google AI Studio üzerinden bir API Key edinin.
+-Proje içerisindeki Info.plist dosyasına gidin (veya Secrets.xcconfig dosyası oluşturun).
+-API anahtarınızı ilgili alana ekleyin.
 
 ### 4. Çalıştırın
 Simülatör veya gerçek cihazınızı seçin ve CMD + R ile projeyi derleyin.
