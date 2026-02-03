@@ -9,23 +9,9 @@ Karakterleri, Hogwarts binalarını ve kitapları inceleyebilir; iki karakteri *
 
 ## 📸 Uygulama Önizleme
 
-### 🏠 Home Ekranı
-<img src="screenshots/home.png" width="300">
-
-### 🧑‍🎓 Karakterler
-<img src="screenshots/characters.png" width="300">
-
-### 📚 Kitaplar
-<img src="screenshots/books.png" width="300">
-
-### ⚔️ Compare
-<img src="screenshots/compare1.png" width="300">
-
-### 🧠 AI Karşılaştırma
-<img src="screenshots/compare2.png" width="300">
-
-### 🤖 Yapay Zekâ Kararı (Gemini)
-<img src="screenshots/ai_result.png" width="300">
+| Home | Karakterler | Kitaplar | Compare | AI Karşılaştırması | Yapay Zeka Kararı |
+|------|-------------|----------|---------|--------------------|------------------|
+| ![home](screenshots/home.png) | ![characters](screenshots/characters.png) | ![books](screenshots/books.png) | ![compare1](screenshots/compare1.png) | ![compare2](screenshots/compare2.png) | ![ai](screenshots/ai_result.png) |
 
 ---
 
