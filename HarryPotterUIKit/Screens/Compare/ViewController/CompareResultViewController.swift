@@ -81,6 +81,20 @@ final class CompareResultViewController: BaseViewController {
         return stack
     }()
     
+    private let aiCompareButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("✨ Ask the Sorting Hat (AI)", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        button.backgroundColor = UIColor(red: 0.45, green: 0.25, blue: 0.65, alpha: 1.0)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 16
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.3
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.shadowRadius = 6
+        return button
+    }()
+    
     // MARK: - Init
     init(leftCharacter: CharacterModel, rightCharacter: CharacterModel) {
         self.leftCharacter = leftCharacter
@@ -118,6 +132,7 @@ final class CompareResultViewController: BaseViewController {
         contentView.addSubview(leftNameLabel)
         contentView.addSubview(rightNameLabel)
         contentView.addSubview(stackView)
+        contentView.addSubview(aiCompareButton)
         
         vsContainer.snp.makeConstraints {
             $0.top.equalToSuperview().offset(40)
@@ -152,7 +167,14 @@ final class CompareResultViewController: BaseViewController {
         stackView.snp.makeConstraints {
             $0.top.equalTo(leftNameLabel.snp.bottom).offset(30)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-20)
+        }
+        
+        aiCompareButton.addTarget(self, action: #selector(aiTapped), for: .touchUpInside)
+        
+        aiCompareButton.snp.makeConstraints {                    $0.top.equalTo(stackView.snp.bottom).offset(30)
+            $0.leading.trailing.equalToSuperview().inset(24)
+            $0.height.equalTo(56)
+            $0.bottom.equalToSuperview().offset(-50)
         }
     }
     
@@ -200,4 +222,16 @@ final class CompareResultViewController: BaseViewController {
         let row = CompareRowView(title: title, leftValue: leftVal, rightValue: rightVal)
         stackView.addArrangedSubview(row)
     }
+    
+    // MARK: - Actions
+    @objc private func aiTapped() {
+            let aiVC = CompareAIViewController(left: leftCharacter, right: rightCharacter)
+
+            if let sheet = aiVC.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.prefersGrabberVisible = true
+            }
+            
+            present(aiVC, animated: true)
+        }
 }

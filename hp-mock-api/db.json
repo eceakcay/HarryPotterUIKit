@@ -89,7 +89,7 @@
        "patronus": "None"
      },
      {
-       "fullName": "Albus Percival Wulfric Brian Dumbledore",
+       "fullName": "Albus Dumbledore",
        "nickname": "Dumbledore",
        "hogwartsHouse": "Gryffindor",
        "interpretedBy": "Richard Harris",
@@ -139,7 +139,117 @@
        "species": "Half-Giant",
        "ancestry": "Half-blood",
        "patronus": "None"
-     }
+     },
+     {
+           "fullName": "Lily Potter",
+           "nickname": "Lily",
+           "hogwartsHouse": "Gryffindor",
+           "interpretedBy": "Geraldine Somerville",
+           "children": [
+             "Harry Potter"
+           ],
+           "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl11ngKo2SmCPQdAkz-yKVNm8IeMZ6kAjCLMmkCbJX59_9u5HWKzq4AkOiGpKJJmjYQnb-qz6m38PcLxCHAS_2dPcQWu35w8GtaVk5pq4mce38wxXG&s=10&ec=121525316",
+           "birthdate": "Jan 30, 1960",
+           "index": 25,
+           "species": "Human",
+           "ancestry": "Muggle-born",
+           "patronus": "Doe"
+         },
+         {
+           "fullName": "Lucius Malfoy",
+           "nickname": "Lucius",
+           "hogwartsHouse": "Slytherin",
+           "interpretedBy": "Jason Isaacs",
+           "children": [
+             "Draco Malfoy"
+           ],
+           "image": "https://static.wikia.nocookie.net/harrypotter/images/b/b4/Lucius_Malfoy_BoH.png",
+           "birthdate": "Apr 4, 1954",
+           "index": 26,
+           "species": "Human",
+           "ancestry": "Pure-blood",
+           "patronus": "None"
+         },
+         {
+           "fullName": "Narcissa Malfoy",
+           "nickname": "Cissy",
+           "hogwartsHouse": "Slytherin",
+           "interpretedBy": "Helen McCrory",
+           "children": [
+             "Draco Malfoy"
+           ],
+           "image": "https://static.wikia.nocookie.net/harrypotter/images/7/78/Narcissa_Malfoy.png/revision/latest/thumbnail/width/360/height/360?cb=20190111020523",
+           "birthdate": "1955",
+           "index": 27,
+           "species": "Human",
+           "ancestry": "Pure-blood",
+           "patronus": "None"
+         },
+         {
+           "fullName": "Cho Chang",
+           "nickname": "Cho",
+           "hogwartsHouse": "Ravenclaw",
+           "interpretedBy": "Katie Leung",
+           "children": [],
+           "image": "https://static.wikia.nocookie.net/harrypotter/images/1/1e/Cho_Chang.jpg",
+           "birthdate": "1979",
+           "index": 28,
+           "species": "Human",
+           "ancestry": "Pure-blood or Half-blood",
+           "patronus": "Swan"
+         },
+         {
+           "fullName": "Dolores Umbridge",
+           "nickname": "Umbridge",
+           "hogwartsHouse": "Slytherin",
+           "interpretedBy": "Imelda Staunton",
+           "children": [],
+           "image": "https://fantastikcanavarlar.com/wp-content/uploads/2016/03/Dolores-Umbridge-img.jpg",
+           "birthdate": "Aug 26, 1965",
+           "index": 29,
+           "species": "Human",
+           "ancestry": "Half-blood",
+           "patronus": "Persian Cat"
+         },
+         {
+           "fullName": "Peter Pettigrew",
+           "nickname": "Wormtail",
+           "hogwartsHouse": "Gryffindor",
+           "interpretedBy": "Timothy Spall",
+           "children": [],
+           "image": "https://static.wikia.nocookie.net/antagonists/images/a/a8/1829523.jpg/revision/latest/scale-to-width-down/300?cb=20160818161757.jpg",
+           "birthdate": "1960",
+           "index": 30,
+           "species": "Human",
+           "ancestry": "Half-blood",
+           "patronus": "Rat"
+         },
+         {
+           "fullName": "Gilderoy Lockhart",
+           "nickname": "Lockhart",
+           "hogwartsHouse": "Ravenclaw",
+           "interpretedBy": "Kenneth Branagh",
+           "children": [],
+           "image": "https://static.wikia.nocookie.net/harrypotter/images/7/7b/Gilderoy_Lockhart_promotional_image_COSF.jpg/revision/latest/scale-to-width-down/1200?cb=20221104114009",
+           "birthdate": "Jan 26, 1964",
+           "index": 31,
+           "species": "Human",
+           "ancestry": "Half-blood",
+           "patronus": "Non-corporeal"
+         },
+         {
+           "fullName": "Argus Filch",
+           "nickname": "Filch",
+           "hogwartsHouse": "Unknown",
+           "interpretedBy": "David Bradley",
+           "children": [],
+           "image": "https://static.wikia.nocookie.net/harrypotter/images/c/c8/Mainfulcd.jpg/revision/latest?cb=20200413210532.jpg",
+           "birthdate": "Unknown",
+           "index": 32,
+           "species": "Human",
+           "ancestry": "Squib",
+           "patronus": "None"
+         }
   ],
   
   "en_houses": [
