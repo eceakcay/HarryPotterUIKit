@@ -1,6 +1,6 @@
 # 🧙‍♂️ Wizarding World
 
-**Wizarding World Companion**, Harry Potter evrenini keşfetmenizi sağlayan modern bir **iOS UIKit uygulamasıdır**.  
+**Wizarding World**, Harry Potter evrenini keşfetmenizi sağlayan modern bir **iOS UIKit uygulamasıdır**.  
 Karakterleri, Hogwarts binalarını ve kitapları inceleyebilir; iki karakteri **yapay zekâ destekli düello karşılaştırması** ile kapıştırabilirsiniz ⚔️✨
 
 📱 UIKit • 🧠 Gemini AI • 🎨 Özel Tema • ⚡️ Async/Await
